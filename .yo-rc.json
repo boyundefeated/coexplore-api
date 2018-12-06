@@ -1,0 +1,31 @@
+{
+  "generator-jhipster": {
+    "promptValues": {
+      "packageName": "com.coexplore.api"
+    },
+    "jhipsterVersion": "5.7.0",
+    "applicationType": "monolith",
+    "baseName": "coexploreapi",
+    "packageName": "com.coexplore.api",
+    "packageFolder": "com/coexplore/api",
+    "serverPort": "8080",
+    "authenticationType": "jwt",
+    "cacheProvider": "no",
+    "websocket": false,
+    "databaseType": "sql",
+    "devDatabaseType": "mysql",
+    "prodDatabaseType": "mysql",
+    "searchEngine": false,
+    "messageBroker": false,
+    "serviceDiscoveryType": false,
+    "buildTool": "maven",
+    "enableSwaggerCodegen": false,
+    "jwtSecretKey": "MTY4N2ViZTExYjNjYTJkYTE3YWJiYWJmZDcwOGNmZmZhZTBlMTA4MGFjNDFhNmNkNDYwZjdkOWU2MzAwYmQ0OWQ5MDBmM2FiMjg1OTI4ZjAwOTljYjM4ZDE5ZTdiOTI2MGMwZDVkOThkMWI2MjMxNzc3MWY2MzA5YTE4ZjNiODU=",
+    "testFrameworks": [],
+    "jhiPrefix": "jhi",
+    "otherModules": [],
+    "enableTranslation": false,
+    "clientPackageManager": "npm",
+    "skipClient": true
+  }
+}
