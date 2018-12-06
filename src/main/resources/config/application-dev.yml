@@ -36,9 +36,9 @@ spring:
             indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://107.113.193.82:3306/coexploreapi?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false
-        username: test
-        password: 12345
+        url: jdbc:mysql://85.10.205.173:3306/coexplore?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false
+        username: coexplore
+        password: coexplore
         hikari:
             auto-commit: false
             data-source-properties:
@@ -59,10 +59,16 @@ spring:
     liquibase:
         contexts: dev
     mail:
-        host: localhost
-        port: 25
-        username:
-        password:
+        host: smtp.gmail.com
+        port: 587
+        username: nguyenhaiduy2894@gmail.com  #Replace this field with your Gmail username.
+        password: xlozatephlbqhuvx           #Replace this field with your Gmail password.
+        protocol: smtp
+        tls: true
+        properties.mail.smtp:
+            auth: true
+            starttls.enable: true
+            ssl.trust: smtp.gmail.com
     messages:
         cache-duration: PT1S # 1 second, see the ISO 8601 standard
     thymeleaf:
