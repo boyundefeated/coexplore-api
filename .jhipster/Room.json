@@ -1,0 +1,46 @@
+{
+    "name": "Room",
+    "fields": [
+        {
+            "fieldName": "roomNumber",
+            "fieldType": "String"
+        },
+        {
+            "fieldName": "price",
+            "fieldType": "Double"
+        },
+        {
+            "fieldName": "seat",
+            "fieldType": "Integer"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "space",
+            "otherEntityName": "space",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "reservations",
+            "otherEntityName": "reservation",
+            "otherEntityRelationshipName": "room"
+        },
+        {
+            "relationshipType": "one-to-many",
+            "relationshipName": "occupiedRoom",
+            "otherEntityName": "occupiedRoom",
+            "otherEntityRelationshipName": "room"
+        }
+    ],
+    "changelogDate": "20181207074422",
+    "entityTableName": "room",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}

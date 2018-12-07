@@ -1,0 +1,136 @@
+entity SettingBanner {
+    image String
+  	mainText String
+    subText String
+    order Integer
+}
+entity SettingTestimonial{
+	image String
+    comment String
+    order Integer
+}
+
+entity SettingContent{
+	item String
+    content String
+}
+
+entity SettingBanner {
+    image String
+  	mainText String
+    subText String
+    order Integer
+}
+entity Space {
+    name String
+}
+entity Room {
+    roomNumber String
+    price Double
+    seat Integer
+}
+entity Location {
+    address String
+    ward String
+    district String
+    province String
+    longitude String
+    latitude String
+}
+entity Ward{
+    name String
+    type String
+    location String
+}
+entity District {
+    name String
+    type String
+    location String
+}
+entity Province {
+    name String
+    type String
+    location String
+}
+
+entity Country {
+    name String
+}
+
+enum PromotionType {
+    PERCENT, MONEY
+}
+
+entity OccupiedRoom{
+    checkIn Instant
+    checkOut Instant
+}
+
+entity Invoice{
+    amount Double
+}
+entity  Customer {
+    userName String 
+    password String
+    level String
+}
+
+entity Membership{
+    name String
+    price Double
+}
+
+entity Purchase{
+    fromDate Instant
+    toDate Instant
+    amount Double
+}
+
+entity Reservation{
+    fromDate Instant
+    toDate Instant
+}
+
+entity Promotion{
+    name String
+    code String
+    fromDate Instant
+    toDate Instant
+    type PromotionType
+    value String
+}
+
+
+
+relationship OneToOne {
+    Province{country} to Country,
+    Space{location} to Location,
+    Ward{district} to District,
+    District{province} to Province,
+    OccupiedRoom{invoice} to Invoice,
+    Purchase{membership} to Membership,
+    Purchase{promotion} to Promotion
+}
+
+// defining multiple OneToMany relationships with comments
+relationship OneToMany {
+    Space{room} to Room,
+    Customer{reservations} to Reservation,
+    Room{reservations} to Reservation,
+    Room{occupiedRoom} to OccupiedRoom,
+    Reservation{occupiedRoom} to OccupiedRoom,
+    Customer{purchase} to Purchase
+}
+
+// Set pagination options
+paginate * with pagination
+
+// Use Data Transfert Objects (DTO)
+dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
+

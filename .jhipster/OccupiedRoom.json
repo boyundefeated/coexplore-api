@@ -1,0 +1,44 @@
+{
+    "name": "OccupiedRoom",
+    "fields": [
+        {
+            "fieldName": "checkIn",
+            "fieldType": "Instant"
+        },
+        {
+            "fieldName": "checkOut",
+            "fieldType": "Instant"
+        }
+    ],
+    "relationships": [
+        {
+            "relationshipName": "room",
+            "otherEntityName": "room",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        },
+        {
+            "relationshipType": "one-to-one",
+            "relationshipName": "invoice",
+            "otherEntityName": "invoice",
+            "otherEntityField": "id",
+            "ownerSide": true,
+            "otherEntityRelationshipName": "occupiedRoom"
+        },
+        {
+            "relationshipName": "reservation",
+            "otherEntityName": "reservation",
+            "relationshipType": "many-to-one",
+            "otherEntityField": "id"
+        }
+    ],
+    "changelogDate": "20181207074428",
+    "entityTableName": "occupied_room",
+    "dto": "mapstruct",
+    "pagination": "pagination",
+    "service": "serviceImpl",
+    "jpaMetamodelFiltering": false,
+    "fluentMethods": true,
+    "clientRootFolder": "",
+    "applications": "*"
+}
