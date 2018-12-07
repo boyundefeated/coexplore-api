@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT -Dspring.profiles.active=dev,swagger  -jar target/coexplore-api-0.0.1-SNAPSHOT.jar
+web: java -Dserver.port=$PORT -DskipTests=true -Dspring.profiles.active=dev,swagger  -jar target/coexplore-api-0.0.1-SNAPSHOT.jar
