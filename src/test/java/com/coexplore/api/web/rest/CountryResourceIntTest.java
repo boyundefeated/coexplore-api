@@ -1,13 +1,19 @@
 package com.coexplore.api.web.rest;
 
-import com.coexplore.api.CoexploreapiApp;
+import static com.coexplore.api.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.coexplore.api.domain.Country;
-import com.coexplore.api.repository.CountryRepository;
-import com.coexplore.api.service.CountryService;
-import com.coexplore.api.service.dto.CountryDTO;
-import com.coexplore.api.service.mapper.CountryMapper;
-import com.coexplore.api.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,15 +29,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-
-import static com.coexplore.api.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.coexplore.api.CoexploreapiApp;
+import com.coexplore.api.common.exception.DefaultExceptionAdvice;
+import com.coexplore.api.domain.Country;
+import com.coexplore.api.repository.CountryRepository;
+import com.coexplore.api.service.CountryService;
+import com.coexplore.api.service.dto.CountryDTO;
+import com.coexplore.api.service.mapper.CountryMapper;
 
 /**
  * Test class for the CountryResource REST controller.
@@ -61,7 +65,7 @@ public class CountryResourceIntTest {
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
     @Autowired
-    private ExceptionTranslator exceptionTranslator;
+    private DefaultExceptionAdvice defaultExceptionAdvice;
 
     @Autowired
     private EntityManager em;
@@ -76,7 +80,7 @@ public class CountryResourceIntTest {
         final CountryResource countryResource = new CountryResource(countryService);
         this.restCountryMockMvc = MockMvcBuilders.standaloneSetup(countryResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
+            .setControllerAdvice(defaultExceptionAdvice)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }

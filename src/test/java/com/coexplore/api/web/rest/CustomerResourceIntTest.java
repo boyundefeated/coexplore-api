@@ -1,13 +1,12 @@
 package com.coexplore.api.web.rest;
 
 import com.coexplore.api.CoexploreapiApp;
-
+import com.coexplore.api.common.exception.DefaultExceptionAdvice;
 import com.coexplore.api.domain.Customer;
 import com.coexplore.api.repository.CustomerRepository;
 import com.coexplore.api.service.CustomerService;
 import com.coexplore.api.service.dto.CustomerDTO;
 import com.coexplore.api.service.mapper.CustomerMapper;
-import com.coexplore.api.web.rest.errors.ExceptionTranslator;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -67,7 +66,7 @@ public class CustomerResourceIntTest {
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
     @Autowired
-    private ExceptionTranslator exceptionTranslator;
+    private DefaultExceptionAdvice defaultExceptionAdvice;
 
     @Autowired
     private EntityManager em;
@@ -82,7 +81,7 @@ public class CustomerResourceIntTest {
         final CustomerResource customerResource = new CustomerResource(customerService);
         this.restCustomerMockMvc = MockMvcBuilders.standaloneSetup(customerResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
+            .setControllerAdvice(defaultExceptionAdvice)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }

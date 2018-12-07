@@ -1,13 +1,21 @@
 package com.coexplore.api.web.rest;
 
-import com.coexplore.api.CoexploreapiApp;
+import static com.coexplore.api.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.coexplore.api.domain.Purchase;
-import com.coexplore.api.repository.PurchaseRepository;
-import com.coexplore.api.service.PurchaseService;
-import com.coexplore.api.service.dto.PurchaseDTO;
-import com.coexplore.api.service.mapper.PurchaseMapper;
-import com.coexplore.api.web.rest.errors.ExceptionTranslator;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,17 +31,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.List;
-
-
-import static com.coexplore.api.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.coexplore.api.CoexploreapiApp;
+import com.coexplore.api.common.exception.DefaultExceptionAdvice;
+import com.coexplore.api.domain.Purchase;
+import com.coexplore.api.repository.PurchaseRepository;
+import com.coexplore.api.service.PurchaseService;
+import com.coexplore.api.service.dto.PurchaseDTO;
+import com.coexplore.api.service.mapper.PurchaseMapper;
 
 /**
  * Test class for the PurchaseResource REST controller.
@@ -69,7 +73,7 @@ public class PurchaseResourceIntTest {
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
     @Autowired
-    private ExceptionTranslator exceptionTranslator;
+    private DefaultExceptionAdvice defaultExceptionAdvice;
 
     @Autowired
     private EntityManager em;
@@ -84,7 +88,7 @@ public class PurchaseResourceIntTest {
         final PurchaseResource purchaseResource = new PurchaseResource(purchaseService);
         this.restPurchaseMockMvc = MockMvcBuilders.standaloneSetup(purchaseResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
+            .setControllerAdvice(defaultExceptionAdvice)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }

@@ -1,13 +1,19 @@
 package com.coexplore.api.web.rest;
 
-import com.coexplore.api.CoexploreapiApp;
+import static com.coexplore.api.web.rest.TestUtil.createFormattingConversionService;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.Matchers.hasItem;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.coexplore.api.domain.Membership;
-import com.coexplore.api.repository.MembershipRepository;
-import com.coexplore.api.service.MembershipService;
-import com.coexplore.api.service.dto.MembershipDTO;
-import com.coexplore.api.service.mapper.MembershipMapper;
-import com.coexplore.api.web.rest.errors.ExceptionTranslator;
+import java.util.List;
+
+import javax.persistence.EntityManager;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,15 +29,13 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import java.util.List;
-
-
-import static com.coexplore.api.web.rest.TestUtil.createFormattingConversionService;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.hamcrest.Matchers.hasItem;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import com.coexplore.api.CoexploreapiApp;
+import com.coexplore.api.common.exception.DefaultExceptionAdvice;
+import com.coexplore.api.domain.Membership;
+import com.coexplore.api.repository.MembershipRepository;
+import com.coexplore.api.service.MembershipService;
+import com.coexplore.api.service.dto.MembershipDTO;
+import com.coexplore.api.service.mapper.MembershipMapper;
 
 /**
  * Test class for the MembershipResource REST controller.
@@ -64,7 +68,7 @@ public class MembershipResourceIntTest {
     private PageableHandlerMethodArgumentResolver pageableArgumentResolver;
 
     @Autowired
-    private ExceptionTranslator exceptionTranslator;
+    private DefaultExceptionAdvice defaultExceptionAdvice;
 
     @Autowired
     private EntityManager em;
@@ -79,7 +83,7 @@ public class MembershipResourceIntTest {
         final MembershipResource membershipResource = new MembershipResource(membershipService);
         this.restMembershipMockMvc = MockMvcBuilders.standaloneSetup(membershipResource)
             .setCustomArgumentResolvers(pageableArgumentResolver)
-            .setControllerAdvice(exceptionTranslator)
+            .setControllerAdvice(defaultExceptionAdvice)
             .setConversionService(createFormattingConversionService())
             .setMessageConverters(jacksonMessageConverter).build();
     }
