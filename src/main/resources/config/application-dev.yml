@@ -36,9 +36,9 @@ spring:
             indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://85.10.205.173:3306/coexplore?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false
-        username: coexplore
-        password: coexplore
+        url: jdbc:mysql://localhost:3306/coexplore?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false
+        username: root
+        password: 123456a@
         hikari:
             auto-commit: false
             data-source-properties:
@@ -62,7 +62,7 @@ spring:
         host: smtp.gmail.com
         port: 587
         username: nguyenhaiduy2894@gmail.com  #Replace this field with your Gmail username.
-        password: xlozatephlbqhuvx           #Replace this field with your Gmail password.
+        password: koilnjfkznalaari          #Replace this field with your Gmail password.
         protocol: smtp
         tls: true
         properties.mail.smtp:
@@ -104,7 +104,7 @@ jhipster:
                 token-validity-in-seconds-for-remember-me: 2592000
     mail: # specific JHipster mail property, for standard properties see MailProperties
         from: coexploreapi@localhost
-        base-url: http://127.0.0.1:8080
+        base-url: https://coexplore-api.herokuapp.com
     metrics: # DropWizard Metrics configuration, used by MetricsConfiguration
         jmx:
             enabled: true
