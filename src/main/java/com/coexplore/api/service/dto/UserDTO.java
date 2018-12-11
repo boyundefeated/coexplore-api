@@ -1,17 +1,18 @@
 package com.coexplore.api.service.dto;
 
 import com.coexplore.api.config.Constants;
-
 import com.coexplore.api.domain.Authority;
 import com.coexplore.api.domain.User;
+import com.coexplore.api.domain.enumeration.UserType;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-
-import javax.validation.constraints.*;
 import java.time.Instant;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 
 /**
  * A DTO representing a user, with his authorities.
@@ -52,6 +53,10 @@ public class UserDTO {
     private Instant lastModifiedDate;
 
     private Set<String> authorities;
+    
+    private String profileUrl;
+    
+    private UserType userType = UserType.EMAIL;
 
     public UserDTO() {
         // Empty constructor needed for Jackson.
@@ -177,6 +182,22 @@ public class UserDTO {
 
     public void setAuthorities(Set<String> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     @Override

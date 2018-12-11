@@ -6,6 +6,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 
+import com.coexplore.api.domain.Authority;
 import com.coexplore.api.web.rest.vm.response.LoginResponse;
 
 import org.slf4j.Logger;
@@ -16,6 +17,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import io.github.jhipster.config.JHipsterProperties;
@@ -98,6 +100,30 @@ public class TokenProvider {
 
         String accessToken =  Jwts.builder()
             .setSubject(authentication.getName())
+            .claim(AUTHORITIES_KEY, authorities)
+            .signWith(key, SignatureAlgorithm.HS512)
+            .setExpiration(validity)
+            .compact();
+        
+        LoginResponse response = new LoginResponse();
+        response.setAccessToken(accessToken);
+        response.setAuthorities(authorities);
+        response.setExpiredIn(validity);
+//        response.setUserName(email);
+        return response;
+    }
+    
+    public LoginResponse createTokenResponseForSocial(com.coexplore.api.domain.User user) {
+        String authorities = user.getAuthorities().stream()
+            .map(Authority::getName)
+            .collect(Collectors.joining(","));
+
+        long now = (new Date()).getTime();
+        Date validity = new Date(now + this.tokenValidityInMilliseconds);
+       
+
+        String accessToken =  Jwts.builder()
+            .setSubject(user.getLogin())
             .claim(AUTHORITIES_KEY, authorities)
             .signWith(key, SignatureAlgorithm.HS512)
             .setExpiration(validity)

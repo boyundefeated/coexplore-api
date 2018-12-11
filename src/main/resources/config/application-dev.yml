@@ -36,7 +36,7 @@ spring:
             indent-output: true
     datasource:
         type: com.zaxxer.hikari.HikariDataSource
-        url: jdbc:mysql://localhost:3306/coexplore?useUnicode=true&characterEncoding=utf8&useSSL=false&useLegacyDatetimeCode=false
+        url: jdbc:mysql://localhost:3306/coexplore?useUnicode=true&characterEncoding=utf8&character_set_server=utf8mb4&useSSL=false&useLegacyDatetimeCode=false
         username: root
         password: 123456a@
         hikari:
@@ -59,7 +59,8 @@ spring:
     liquibase:
         contexts: dev
     mail:
-        host: smtp.gmail.com
+        host: localhost
+#        host: smtp.gmail.com
         port: 587
         username: nguyenhaiduy2894@gmail.com  #Replace this field with your Gmail username.
         password: koilnjfkznalaari          #Replace this field with your Gmail password.

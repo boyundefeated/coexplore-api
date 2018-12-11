@@ -4,18 +4,23 @@ import com.codahale.metrics.annotation.Timed;
 import com.coexplore.api.common.constant.UrlConstant;
 import com.coexplore.api.common.response.ResponseStatus;
 import com.coexplore.api.common.response.StandardResponse;
+import com.coexplore.api.domain.User;
 import com.coexplore.api.security.jwt.JWTFilter;
 import com.coexplore.api.security.jwt.TokenProvider;
+import com.coexplore.api.service.UserService;
+import com.coexplore.api.service.dto.UserDTO;
 import com.coexplore.api.web.rest.vm.LoginVM;
 import com.coexplore.api.web.rest.vm.response.LoginResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -43,6 +48,9 @@ public class AuthenticationController {
         this.tokenProvider = tokenProvider;
         this.authenticationManager = authenticationManager;
     }
+    
+    @Autowired
+    private UserService userService;
 
     @PostMapping("/login")
     @Timed
@@ -61,6 +69,17 @@ public class AuthenticationController {
         return response;
     }
 
+    @PostMapping("/social")
+    @Timed
+    @Transactional
+    public StandardResponse<LoginResponse> loginWithSocial(@Valid @RequestBody UserDTO userDTO) {
+        User user = userService.loginWithSocial(userDTO);
+        LoginResponse loginResponse = tokenProvider.createTokenResponseForSocial(user);
+        StandardResponse<LoginResponse> response = new StandardResponse<LoginResponse>(ResponseStatus.SUCCESS, loginResponse);
+        return response;
+    }
+
+    
     /**
      * GET  /authenticate : check if the user is authenticated, and return its login.
      *

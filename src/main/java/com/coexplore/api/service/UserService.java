@@ -107,6 +107,8 @@ public class UserService {
         newUser.setEmail(userDTO.getEmail().toLowerCase());
         newUser.setImageUrl(userDTO.getImageUrl());
         newUser.setLangKey(userDTO.getLangKey());
+        newUser.setUserType(userDTO.getUserType());
+        newUser.setProfileUrl(userDTO.getProfileUrl());
         // new user is not active
         newUser.setActivated(false);
         // new user gets registration key
@@ -117,6 +119,46 @@ public class UserService {
         userRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);
         return newUser;
+    }
+    
+    public User loginWithSocial(UserDTO userDTO) {
+        User existedUser = userRepository.findOneByLogin(userDTO.getLogin().toLowerCase()).orElse(null);
+        if(existedUser != null){
+            // update info 
+            existedUser.setFirstName(userDTO.getFirstName());
+            existedUser.setLastName(userDTO.getLastName());
+            existedUser.setEmail(userDTO.getEmail().toLowerCase());
+            existedUser.setImageUrl(userDTO.getImageUrl());
+            existedUser.setProfileUrl(userDTO.getProfileUrl());
+            existedUser = userRepository.save(existedUser);
+            return existedUser;
+        }else{
+            // create new User
+            User newUser = new User();
+            String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
+            newUser.setLogin(userDTO.getLogin().toLowerCase());
+            // new user gets initially a generated password
+            newUser.setPassword(encryptedPassword);
+            newUser.setFirstName(userDTO.getFirstName());
+            newUser.setLastName(userDTO.getLastName());
+            newUser.setEmail(userDTO.getEmail().toLowerCase());
+            newUser.setImageUrl(userDTO.getImageUrl());
+            if (userDTO.getLangKey() == null) {
+                newUser.setLangKey(Constants.DEFAULT_LANGUAGE); // default language
+            } else {
+                newUser.setLangKey(userDTO.getLangKey());
+            }
+            // new social user is active
+            newUser.setActivated(true);
+            newUser.setUserType(userDTO.getUserType());
+            newUser.setProfileUrl(userDTO.getProfileUrl());
+            Set<Authority> authorities = new HashSet<>();
+            authorityRepository.findById(AuthoritiesConstants.USER).ifPresent(authorities::add);
+            newUser.setAuthorities(authorities);
+            userRepository.save(newUser);
+            log.debug("Created Information for Social User: {}", newUser);
+            return newUser;
+        }       
     }
     private boolean removeNonActivatedUser(User existingUser){
         if (existingUser.getActivated()) {

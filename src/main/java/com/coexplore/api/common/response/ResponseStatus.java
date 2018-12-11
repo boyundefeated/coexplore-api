@@ -16,11 +16,13 @@ public enum ResponseStatus {
 
     /* ======= error code of bad request ======= */
     BAD_REQUEST("400.000", "Bad request"),
-    MISSING_PARAMS("400.001", "Missing params"),
-    INVALID_PARAMS("400.002", "Invalid params"),
-    INVALID_BODY("400.003", "Invalid body"),
-    INVALID_TYPE_PARAM("400.004", "Invalid type of param"),
-    
+    METHOD_ARGUMENT_NOT_VALID("400.001", "Method argument not valid"), // handleMethodArgumentNotValid
+    TYPE_MISMATCH("400.002", "Type mismatch"), // handleTypeMismatch
+    BIND_EXCEPTION("400.003", "Bind Exception"), //handleBindException
+    MISSING_PATH_VARIABLE("400.004", "Missing path variable"), //handleMissingPathVariable
+    MISSING_SERVLET_REQUEST_PARAMETER("400.005", "Missing servlet request parameter"), //handleMissingServletRequestParameter
+    HTTP_MESSAGE_NOT_READABLE("400.006", "HTTP message not readable"), //handleHttpMessageNotReadable
+
     
     
     

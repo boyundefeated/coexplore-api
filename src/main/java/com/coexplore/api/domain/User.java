@@ -1,7 +1,7 @@
 package com.coexplore.api.domain;
 
 import com.coexplore.api.config.Constants;
-
+import com.coexplore.api.domain.enumeration.UserType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.annotations.BatchSize;
@@ -81,6 +81,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     @Column(name = "reset_date")
     private Instant resetDate = null;
+    
+    @Size(max = 256)
+    @Column(name = "profile_url", length = 256)
+    private String profileUrl;
+    
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type")
+    private UserType userType = UserType.EMAIL;
 
     @JsonIgnore
     @ManyToMany
@@ -195,6 +203,22 @@ public class User extends AbstractAuditingEntity implements Serializable {
 
     public void setAuthorities(Set<Authority> authorities) {
         this.authorities = authorities;
+    }
+
+    public String getProfileUrl() {
+        return profileUrl;
+    }
+
+    public void setProfileUrl(String profileUrl) {
+        this.profileUrl = profileUrl;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     @Override
